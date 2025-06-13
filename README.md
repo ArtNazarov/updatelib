@@ -13,3 +13,12 @@
 # Warning
 
 This tool will clear the server root
+
+# Update via curl
+
+```
+curl -X POST https://somesite.com/updater.php \
+  -F "psw=CHANGE_IT" \
+  -F "action=update" \
+  -F "file=@updates.zip"
+```
