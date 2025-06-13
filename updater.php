@@ -1,12 +1,12 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/updatelib.php');
-
+define('PASS_IS', 'CHANGE_IT');
 $dir = $_SERVER['DOCUMENT_ROOT'];
-$action = $_POST['action'] ?? 'noaction';
-$psw = $_POST['psw'] ?? '';
 
-if (($action == 'update') && ($psw === 'CHANGE_IT')) {
-    
+ 
+
+if (($_POST['action'] === 'update') && ($_POST['psw']=== PASS_IS)) {
+    echo "Clearing...\n";
     // clear
     try {
         \Nzv\deleteDirectory($dir);
@@ -53,10 +53,8 @@ if (($action == 'update') && ($psw === 'CHANGE_IT')) {
     } else {
         echo "\n No file uploaded";
     }
-exit(0);    
-}
-
-if ( ( $_GET['action'] == 'update-form') && ($_GET['psw'] === 'CHANGE_IT' )) {
+  
+} else if ( ( $_GET['action'] === 'update-form') && ($_GET['psw'] === PASS_IS )) {
     echo '
     <!DOCTYPE html>
     <html>
@@ -67,7 +65,7 @@ if ( ( $_GET['action'] == 'update-form') && ($_GET['psw'] === 'CHANGE_IT' )) {
         <h2>Upload Update ZIP</h2>
         <form action="updater.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="action" value="update">
-            <input type="hidden" name="psw" value="CHANGE_IT">
+            <input type="hidden" name="psw" value="' . PASS_IS . '">
             Select ZIP file to upload:
             <input type="file" name="update_file" id="update_file">
             <input type="submit" value="Upload Update" name="submit">
