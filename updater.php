@@ -1,8 +1,61 @@
 <?php
+require_once __DIR__ . '/vendor/autoload.php';
 require_once($_SERVER['DOCUMENT_ROOT'] . '/updatelib.php');
 define('PASS_IS', 'CHANGE_IT');
 $dir = $_SERVER['DOCUMENT_ROOT'];
 
+/**
+ * @OA\Info(title="Update API", version="1.0")
+ * @OA\SecurityScheme(
+ *     securityScheme="api_key",
+ *     type="apiKey",
+ *     in="query",
+ *     name="psw"
+ * )
+ */
+
+/**
+ * @OA\Post(
+ *     path="/updater.php",
+ *     summary="Upload and apply system update",
+ *     tags={"System"},
+ *     security={{"api_key":{}}},
+ *     @OA\RequestBody(
+ *         description="Update package and credentials",
+ *         required=true,
+ *         @OA\MediaType(
+ *             mediaType="multipart/form-data",
+ *             @OA\Schema(
+ *                 required={"action", "psw", "update_file"},
+ *                 @OA\Property(property="action", type="string", example="update"),
+ *                 @OA\Property(property="psw", type="string", example="CHANGE_IT"),
+ *                 @OA\Property(
+ *                     property="update_file",
+ *                     type="string",
+ *                     format="binary",
+ *                     description="ZIP file containing the update"
+ *                 )
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="200",
+ *         description="Update result",
+ *         @OA\MediaType(
+ *             mediaType="text/plain",
+ *             @OA\Schema(type="string", example="Clearing...\nClearing done!\nUpdate successfully extracted to /var/www")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="403",
+ *         description="Invalid credentials",
+ *         @OA\MediaType(
+ *             mediaType="text/plain",
+ *             @OA\Schema(type="string", example="Password or action is wrong")
+ *         )
+ *     )
+ * )
+ */
  
 
 if (($_POST['action'] === 'update') && ($_POST['psw']=== PASS_IS)) {
@@ -54,7 +107,37 @@ if (($_POST['action'] === 'update') && ($_POST['psw']=== PASS_IS)) {
         echo "\n No file uploaded";
     }
   
-} else if ( ( $_GET['action'] === 'update-form') && ($_GET['psw'] === PASS_IS )) {
+}
+
+/**
+ * @OA\Get(
+ *     path="/updater.php",
+ *     summary="Display update form",
+ *     tags={"System"},
+ *     security={{"api_key":{}}},
+ *     @OA\Parameter(
+ *         name="action",
+ *         in="query",
+ *         required=true,
+ *         @OA\Schema(type="string", example="update-form")
+ *     ),
+ *     @OA\Parameter(
+ *         name="psw",
+ *         in="query",
+ *         required=true,
+ *         @OA\Schema(type="string", example="CHANGE_IT")
+ *     ),
+ *     @OA\Response(
+ *         response="200",
+ *         description="HTML form for update",
+ *         @OA\MediaType(
+ *             mediaType="text/html"
+ *         )
+ *     )
+ * )
+ */
+
+else if ( ( $_GET['action'] === 'update-form') && ($_GET['psw'] === PASS_IS )) {
     echo '
     <!DOCTYPE html>
     <html>
@@ -73,7 +156,16 @@ if (($_POST['action'] === 'update') && ($_POST['psw']=== PASS_IS)) {
     </body>
     </html>
     ';
-} else {
+} else
+// Add this to your updater.php file
+if ($_GET['action'] === 'openapi') {
+    require_once 'vendor/autoload.php';
+    $openapi = \OpenApi\scan(__FILE__); // Scans current file for annotations
+    header('Content-Type: application/json');
+    echo $openapi->toJson();
+    exit;
+}
+else {
     echo "Password or action is wrong";
 }
 ?>

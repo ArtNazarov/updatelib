@@ -40,3 +40,7 @@ try {
     echo "Ошибка: " . $e->getMessage();
 }
 ```
+
+# Get Swagger OpenAPI specifications
+
+Open ```http://yourhost.com/updater.php?action=openapi```
