@@ -25,9 +25,16 @@ curl -X POST https://somesite.com/updater.php \
 
 # Update using PHP
 
+Sending from the current host to the other host some updates, the destination is localhost:9999
+
 ```
+<?php
+require_once(__DIR__ . "/updatelib.php");
+
+echo "Sender";
+
 try {
-    $response = \Nzv\sendUpdates('https://somesite.com/updater.php', 'CHANGE_IT', 'updates.zip');
+    $response = \Nzv\sendUpdates('http://localhost:9999/updater.php', 'CHANGE_IT', __DIR__ . '/updates.zip');
     echo "Ответ сервера: $response";
 } catch (Exception $e) {
     echo "Ошибка: " . $e->getMessage();

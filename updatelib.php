@@ -4,6 +4,8 @@ namespace Nzv;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 use FilesystemIterator;
+use CURLFile;
+use Exception;
 
 function deleteDirectory($dir) {
     $iterator = new RecursiveIteratorIterator(
@@ -35,7 +37,7 @@ function sendUpdates($url, $psw, $pathToFile) {
     $postFields = [
         'psw' => $psw,
         'action' => 'update',
-        'file' => new CURLFile($pathToFile)
+        'update_file' => new CURLFile($pathToFile)
     ];
 
     $ch = curl_init();
