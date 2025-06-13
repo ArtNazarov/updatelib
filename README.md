@@ -1,7 +1,15 @@
-# How to use
+# How to Use
 
-Open ```/updater.php?action=update-form&psw=CHANGE_IT``` and upload new zip archive
+   Open ```/updater.php?action=update-form&psw=CHANGE_IT``` and upload a new ZIP archive.
 
-Also update can be sended as POST request with action='update', psw is your secret and update_file as zip archive with new server root data
+   Alternatively, you can send the update as a POST request with the following parameters:
 
-Warning: the tool is clear server root.
+   - action='update'
+
+  - psw (your secret password)
+
+  - update_file (the ZIP archive containing the **new server root data**)
+
+# Warning
+
+This tool will clear the server root
