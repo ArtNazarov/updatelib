@@ -22,3 +22,14 @@ curl -X POST https://somesite.com/updater.php \
   -F "action=update" \
   -F "file=@updates.zip"
 ```
+
+# Update using PHP
+
+```
+try {
+    $response = \Nzv\sendUpdates('https://somesite.com/updater.php', 'CHANGE_IT', 'updates.zip');
+    echo "Ответ сервера: $response";
+} catch (Exception $e) {
+    echo "Ошибка: " . $e->getMessage();
+}
+```
